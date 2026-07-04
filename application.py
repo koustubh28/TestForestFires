@@ -30,8 +30,11 @@ def predict_datapoint():
 
         new_data_scaled = standard_scaler.transform([[temp, rh, ws, rain, ffmc, dmc, isi, classes, region]])
         result = ridge_model.predict(new_data_scaled)
+        prediction = float(result[0])
+        percentage = prediction * 100 if 0 <= prediction <= 1 else prediction
+        formatted_result = f"{percentage:.2f}%"
 
-        return render_template('home.html', results = result[0])
+        return render_template('home.html', results=formatted_result)
 
     else:
         return render_template('home.html')
